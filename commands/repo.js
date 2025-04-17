@@ -9,7 +9,7 @@ module.exports = {
       .setDescription('GitHubのリポジトリのURLを入力してください')
       .setRequired(true)),
     async execute(interaction) {
-      const url = interaction.option.getString('url');
+      const url = interaction.options.getString('url');
       await interaction.reply(`✅ GitHubリポジトリを登録しました: ${url}`);
     }
 };
