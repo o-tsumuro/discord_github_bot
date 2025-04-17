@@ -11,4 +11,5 @@ client.once('ready', () => {
 });
 
 // トークンでログイン
+// 任意のApplicationのBotのTokenから入手
 client.login(process.env.DISCORD_TOKEN);
