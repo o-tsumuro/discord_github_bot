@@ -30,6 +30,6 @@ module.exports = {
 
       saveRepoURL(guildId, url);
       
-      await interaction.reply(`✅ GitHubリポジトリを登録しました: ${url}`);
+      await interaction.reply(`✓ GitHubリポジトリを登録しました: ${url}`);
     }
 };

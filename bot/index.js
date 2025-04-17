@@ -11,7 +11,7 @@ const client = new Client({
 
 // 起動時の処理
 client.once('ready', () => {
-  console.log(`✅ Bot がログインしました: ${client.user.tag}`);
+  console.log(`✓ Bot がログインしました: ${client.user.tag}`);
 });
 
 // トークンでログイン
