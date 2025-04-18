@@ -1,9 +1,11 @@
+require('dotenv').config();
 const express = require('express');
 const bodyParser = require('body-parser');
 const fs = require('fs');
 const path = require('path');
 const client = require('../bot/client');
 
+  // サーバー起動
 const app = express();
 const PORT = 3000;
 
@@ -13,7 +15,7 @@ const CONFIG_FILE = path.join(__dirname, '../data/repo-config.json');
 app.use(bodyParser.json());
 
 // GitHub Webhook の受信エンドポイント
-app.post('/webhook', (req, res) => {
+app.post('/webhook', async (req, res) => {
   const event = req.headers['x-github-event'];
   const payload = req.body;
 
@@ -30,24 +32,24 @@ app.post('/webhook', (req, res) => {
     const entry = Object.entries(config).find(([guildId, info]) => info.url === repoUrl);
 
     if (entry) {
-      const [guildId, { channelId }] = entry;
-      
-      console.log('🔍 探してるチャンネルID: ', channelId);
-      console.log('📦 client.channels.cache.has(channelId):', client.channels.cache.has(channelId));
-      console.log('🧾 全チャンネル一覧:', [...client.channels.cache.keys()]);
+    const [guildId, { channelId }] = entry;
 
-      const channel = client.channels.cache.get(channelId);
-      if (channel && channel.isTextBased()) {
-        channel.send(message);
-      } else {
-        console.warn(`⚠ 通知先のチャンネルが見つからない: guildId=${guildId} channelId=${channelId}`);
+      try {
+        const channel = await client.channels.fetch(channelId);
+        if (channel && channel.isTextBased()) {
+          channel.send(message);
+        } else {
+          console.warn(`⚠ 通知先のチャンネルが見つからない: guildId=${guildId} channelId=${channelId}`);
+        }
+      } catch (error) {
+        console.error('チャンネル取得エラー:', error);
       }
     } else {
       console.log(`⚠ 通知先が見つからないリポジトリ: ${repoUrl}`);
     }
   }
 
-  res.status(200).send('OK')
+  res.status(200).send('OK');
 });
 
 // サーバー起動

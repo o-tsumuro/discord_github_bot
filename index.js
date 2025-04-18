@@ -1,2 +1,3 @@
 // エントリーポイント
-require('./bot'); // bot/index.js を実行
+require('./bot/index');
+require('./server/index');
