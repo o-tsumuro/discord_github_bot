@@ -9,12 +9,4 @@ const client = new Client({
   ]
 });
 
-client.once('ready', () => {
-  console.log(`✓ Bot がログインしました: ${client.user.tag}`);
-});
-
-// トークンでログイン
-// 任意のApplicationのBotのTokenから入手
-client.login(process.env.DISCORD_TOKEN);
-
 module.exports = client;
