@@ -19,7 +19,7 @@ app.post('/webhook', (req, res) => {
     const pusher = payload.pusher.name;
     const commits = payload.commits.map(commit => `- ${commit.message}`).join('\n');
 
-    console.log(`>> ${pusher} が ${repoName} にプッシュしました: \n <<< コミット内容 >>> \n ${commits}`);
+    console.log(`>> ${pusher} が ${repoName} にプッシュしました: \n ${commits}`);
   }
 
   res.status(200).send('OK')
