@@ -1,4 +1,5 @@
 const client = require('./client');
+require('dotenv').config();
 
 client.once('ready', () => {
   console.log(`✓ Bot がログインしました: ${client.user.tag}`);
