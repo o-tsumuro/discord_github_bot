@@ -23,21 +23,22 @@ app.post('/webhook', (req, res) => {
     const repoName = payload.repository.full_name;
     const pusher = payload.pusher.name;
     const commits = payload.commits.map(commit => `- ${commit.message}`).join('\n');
+    const repoUrl = payload.repository.html_url;
 
     const message = `>> ${pusher} が ${repoName} にプッシュしました: \n ${commits}`;
-    console.log(message);
-
-    // 通知対象のチャンネル取得
     const config = JSON.parse(fs.readFileSync(CONFIG_FILE, 'utf8'));
-    for (const guildId in config) {
-      const guild = client.guilds.cache.get(guildId);
-      if (!guild) continue;
+    const entry = Object.entries(config).find(([guildId, info]) => info.url === repoUrl);
 
-      // チャンネルは仮で最初に見つかったテキストチャンネルに送信
-      const channel = guild.channels.cache.find(c => c.isTextBased() && c.viewable);
-      if (channel) {
+    if (entry) {
+      const [guildId, { channelId }] = entry;
+      const channel = client.channels.cache.get(channelId);
+      if (channel && channel.isTextBased()) {
         channel.send(message);
+      } else {
+        console.warn(`⚠ 通知先のチャンネルが見つからない: guildId=${guildId} channelId=${channelId}`);
       }
+    } else {
+      console.log(`⚠ 通知先が見つからないリポジトリ: ${repoUrl}`);
     }
   }
 
