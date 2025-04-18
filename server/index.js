@@ -32,6 +32,9 @@ app.post('/webhook', (req, res) => {
     if (entry) {
       const [guildId, { channelId }] = entry;
       const channel = client.channels.cache.get(channelId);
+      console.log('🔍 探してるチャンネルID:', channelId);
+      console.log('📦 client.channels.cache.has(channelId):', client.channels.cache.has(channelId));
+      console.log('🧾 全チャンネル一覧:', [...client.channels.cache.keys()]);
       if (channel && channel.isTextBased()) {
         channel.send(message);
       } else {
