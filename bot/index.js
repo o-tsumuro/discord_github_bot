@@ -1,23 +1,3 @@
-const { Client, GatewayIntentBits } = require('discord.js');
-require('dotenv').config();
-
-const client = new Client({
-  intents: [ // サーバーの基本情報を取得するためのIntent
-    GatewayIntentBits.Guilds,
-    GatewayIntentBits.GuildMessages,
-    GatewayIntentBits.MessageContent
-  ]
-});
-
-// 起動時の処理
-client.once('ready', () => {
-  console.log(`✓ Bot がログインしました: ${client.user.tag}`);
-});
-
-// トークンでログイン
-// 任意のApplicationのBotのTokenから入手
-client.login(process.env.DISCORD_TOKEN);
-
 const fs = require('fs');
 const path = require('path');
 client.commands = new Map();
